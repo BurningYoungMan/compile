@@ -1,0 +1,25 @@
+{
+  "name": "luffy",
+  "version": "1.0.0",
+  "description": "this is a node server demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "supervisor index.js",
+    "start": "npm run server"
+  },
+  "author": "zhaozhenyu",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "knex": "^0.20.1",
+    "koa": "^2.8.2",
+    "koa-router": "^7.4.0",
+    "mysql": "^2.17.1",
+    "nodejs-websocket": "^1.7.2",
+    "superagent": "^5.2.1"
+  },
+  "devDependencies": {
+    "supervisor": "^0.12.0"
+  }
+}
