@@ -9,12 +9,32 @@ router.get('/', async (ctx, next) => {
     ctx.response.body = '<h1>自动编译!</h1>';
 })
 
-router.post('github/burn', async(ctx,next) =>{
+router.post('/github/burnfe', async (ctx, next) => {
+    let postData = await parsePostData(ctx);
+    let postObj = JSON.parse(postData)
+    if (postObj.ref.indexOf('pre') !== -1) {
+        console.log('pre提交')
+        let sshUrl = postObj.repository.ssh_url
+    }
     var str = "接收成功"
     ctx.response.body = str
-    console.log(str)
 })
 
+function parsePostData(ctx) {
+    return new Promise((resolve, reject) => {
+        try {
+            let postdata = '';
+            ctx.req.addListener('data', (data) => {
+                postdata += data;
+            });
+            ctx.req.on("end", function () {
+                resolve(postdata);
+            })
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
 // router.post('/reptile/hupu', async (ctx, next) => {
 //     var str = await reptileHuPu.getInfo()
 //     ctx.response.body = responseWrapper({data:str})
