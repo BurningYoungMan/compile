@@ -2,7 +2,8 @@ const Router = require('koa-router');
 // const reptileHuPu = require('../controllers/reptile/hupu')
 // const responseWrapper = require('../utils/responseWrapper')
 const router = new Router()
-
+const child = require('child_process')
+const path =require('path')
 
 router.get('/', async (ctx, next) => {
     ctx.response.type = 'text/html';
@@ -13,9 +14,17 @@ router.post('/github/burnfe', async (ctx, next) => {
     let postData = await parsePostData(ctx);
     let postObj = JSON.parse(postData)
     if (postObj.ref.indexOf('pre') !== -1) {
-        console.log('pre提交')
         let sshUrl = postObj.repository.ssh_url
+        let repository = postObj.ref.replace('refs/heads/','')
+        let name = postObj.repository.name
+        child.exec(`bash ${path.resolve(__dirname, '../pre_burnfe.sh')} ${sshUrl} ${repository} ${name}`, (error, stdout, stderr) => {
+            if (error) {
+                throw error;
+            }
+            console.log(stdout);
+        })
     }
+    
     var str = "接收成功"
     ctx.response.body = str
 })
