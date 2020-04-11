@@ -13,7 +13,9 @@ router.get('/', async (ctx, next) => {
 router.post('/github/burnfe', async (ctx, next) => {
     let postData = await parsePostData(ctx);
     let postObj = JSON.parse(postData)
-    if (postObj.ref.indexOf('pre') !== -1) {
+    let repository = postObj.ref.replace('refs/heads/','')
+    var str = "部署失败"
+    if (repository === 'pre'|| repository==='master' || repository === 'test') {
         let sshUrl = postObj.repository.ssh_url
         let repository = postObj.ref.replace('refs/heads/','')
         let name = postObj.repository.name
@@ -23,9 +25,8 @@ router.post('/github/burnfe', async (ctx, next) => {
             }
             console.log(stdout);
         })
+	 str = repository +  "部署成功"
     }
-    
-    var str = "接收成功"
     ctx.response.body = str
 })
 
